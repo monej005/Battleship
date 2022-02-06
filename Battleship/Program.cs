@@ -9,12 +9,12 @@ class MainClass
         int shipPieces = 2;
         int shipHits = 0;
         int guesses = 0;
-        int guessesLimit = 3;
+        int guessesLimit = 20;
         int totalHot = 2;
         int totalWarm = 4;
         bool gameOver = true;
 
-        char[,] actualBoard = new char[(fieldsize + 1), (fieldsize + 1)];
+        char[,] actualBoard = new char[(fieldsize + 1), (fieldsize + 1 )];
         char[,] board = new char[fieldsize, fieldsize];
 
         for (int i = 0; i < board.GetLength(0); i++)
