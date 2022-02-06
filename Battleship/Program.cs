@@ -9,10 +9,10 @@ class MainClass
         int shipPieces = 2;
         int shipHits = 0;
         int guesses = 0;
-        int guessesLimit = 20;
-        bool play = true;
+        int guessesLimit = 3;
         int totalHot = 2;
         int totalWarm = 4;
+        bool gameOver = true;
 
         char[,] actualBoard = new char[(fieldsize + 1), (fieldsize + 1)];
         char[,] board = new char[fieldsize, fieldsize];
@@ -38,40 +38,31 @@ class MainClass
 
                 for (int a = -2; a <= totalHot; a++)
                 {
-                    if (((x + a) <= fieldsize) && ((x + a) >= 0) && (actualBoard[x + a, y] != 'X') && (actualBoard[x + a, y] != 'H')) actualBoard[x + a, y] = 'H';
-
-                    if (((x + a) <= fieldsize) && ((y - 2) >= 0) && ((x + a) >= 0) && (actualBoard[x + a, y - 2] != 'X') && (actualBoard[x + a, y - 2] != 'H')) actualBoard[x + a, y - 2] = 'H';
-                    if (((x + a) <= fieldsize) && ((y - 1) >= 0) && ((x + a) >= 0) && (actualBoard[x + a, y - 1] != 'X') && (actualBoard[x + a, y - 1] != 'H')) actualBoard[x + a, y - 1] = 'H';
-
-                    if (((y + 1) <= fieldsize) && ((x + a) <= fieldsize) && ((x + a) >= 0) && (actualBoard[x + a, y + 1] != 'X') && (actualBoard[x + a, y + 1] != 'H')) actualBoard[x + a, y + 1] = 'H';
-                    if (((y + 2) <= fieldsize) && ((x + a) <= fieldsize) && ((x + a) >= 0) && (actualBoard[x + a, y + 2] != 'X') && (actualBoard[x + a, y + 2] != 'H')) actualBoard[x + a, y + 2] = 'H';
+                    for (int b = -2; b <= totalHot; b++)
+                    {
+                        if (((y + b) <= fieldsize) && ((x + a) <= fieldsize) && ((x + a) >= 0) && ((y + b) >= 0) && (actualBoard[x + a, y + b] != 'X') && (actualBoard[x + a, y + b] != 'H')) actualBoard[x + a, y + b] = 'H';
+                    }
                 }
 
                 for (int b = -4; b <= totalWarm; b++)
                 {
-                    if (((x + b) <= fieldsize) && ((x + b) >= 0) && (actualBoard[x + b, y] != 'X') && (actualBoard[x + b, y] != 'H')) actualBoard[x + b, y] = 'W';
-                    
-                    if (((x + b) <= fieldsize) && ((y - 4) >= 0) && ((x + b) >= 0) && (actualBoard[x + b, y - 4] != 'X') && (actualBoard[x + b, y - 4] != 'H')) actualBoard[x + b, y - 4] = 'W';
-                    if (((x + b) <= fieldsize) && ((y - 3) >= 0) && ((x + b) >= 0) && (actualBoard[x + b, y - 3] != 'X') && (actualBoard[x + b, y - 3] != 'H')) actualBoard[x + b, y - 3] = 'W';
-                    if (((x + b) <= fieldsize) && ((y - 2) >= 0) && ((x + b) >= 0) && (actualBoard[x + b, y - 2] != 'X') && (actualBoard[x + b, y - 2] != 'H')) actualBoard[x + b, y - 2] = 'W';
-                    if (((x + b) <= fieldsize) && ((y - 1) >= 0) && ((x + b) >= 0) && (actualBoard[x + b, y - 1] != 'X') && (actualBoard[x + b, y - 1] != 'H')) actualBoard[x + b, y - 1] = 'W';
-
-                    if (((y + 1) <= fieldsize) && ((x + b) <= fieldsize) && ((x + b) >= 0) && (actualBoard[x + b, y + 1] != 'X') && (actualBoard[x + b, y + 1] != 'H')) actualBoard[x + b, y + 1] = 'W';
-                    if (((y + 2) <= fieldsize) && ((x + b) <= fieldsize) && ((x + b) >= 0) && (actualBoard[x + b, y + 2] != 'X') && (actualBoard[x + b, y + 2] != 'H')) actualBoard[x + b, y + 2] = 'W';
-                    if (((y + 3) <= fieldsize) && ((x + b) <= fieldsize) && ((x + b) >= 0) && (actualBoard[x + b, y + 3] != 'X') && (actualBoard[x + b, y + 3] != 'H')) actualBoard[x + b, y + 3] = 'W';
-                    if (((y + 4) <= fieldsize) && ((x + b) <= fieldsize) && ((x + b) >= 0) && (actualBoard[x + b, y + 4] != 'X') && (actualBoard[x + b, y + 4] != 'H')) actualBoard[x + b, y + 4] = 'W';
+                    for (int c = -4; c <= totalWarm; c++) 
+                    {
+                        if (((y + c) <= fieldsize) && ((x + b) <= fieldsize) && ((x + b) >= 0) && ((y + c) >= 0) && (actualBoard[x + b, y + c] != 'X') && (actualBoard[x + b, y + c] != 'H')) actualBoard[x + b, y + c] = 'W';
+                    }
                 }
              
             }
             else i--;
                 
         }
-        
+
+        Console.WriteLine("Hello! Welcome to Battleships, you'll be asked to enter two numbers which act as co-ordinates on the AI's grid. You'll be given clues about how well you are doing as you go along. Good luck!");
+
         while (true)
         {
             try
             {
-
                 Console.Write("Enter a Number: ");
                 string colInput = Console.ReadLine();
                 int row = Int32.Parse(colInput) - 1;
@@ -89,8 +80,43 @@ class MainClass
                         actualBoard[col, row] = 'D';
                         Console.WriteLine("Sunk!");
                         shipHits++;
+                        for (int i = 0; i < fieldsize; i++)
+                        {
+                            for (int j = 0; j < fieldsize; j++)
+                            {
+                                if (actualBoard[i, j] == 'H' || actualBoard[i, j] == 'W')
+                                {
+                                    actualBoard[i, j] = '.';
+                                }
+                            }
+                        }
+                        for (int i = 0; i < fieldsize; i++)
+                        {
+                            for (int j = 0; j < fieldsize; j++) 
+                            {
+                                if (actualBoard[i, j] == 'X')
+                                {
+
+                                    for (int a = -2; a <= totalHot; a++)
+                                    {
+                                        for (int b = -2; b <= totalHot; b++)
+                                        {
+                                            if (((j + b) <= fieldsize) && ((i + a) <= fieldsize) && ((i + a) >= 0) && ((j + b) >= 0) && (actualBoard[i + a, j + b] != 'X') && (actualBoard[i + a, j + b] != 'H')) actualBoard[i + a, j + b] = 'H';
+                                        }
+                                    }
+                                    for (int b = -4; b <= totalWarm; b++)
+                                    {
+                                        for (int c = -4; c <= totalWarm; c++)
+                                        {
+                                            if (((j + c) <= fieldsize) && ((i + b) <= fieldsize) && ((i + b) >= 0) && ((j + c) >= 0) && (actualBoard[i + b, j + c] != 'X') && (actualBoard[i + b, j + c] != 'H')) actualBoard[i + b, j + c] = 'W';
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         if (shipHits == shipPieces)
                         {
+                            gameOver = false;
                             break;
                         }
                     }
@@ -102,37 +128,18 @@ class MainClass
                         if (actualBoard[col, row] == '.') Console.WriteLine("Miss");
                     }
                 }
-
                 if (guesses >= guessesLimit)
                 {
-                    Console.WriteLine("You've had too many guesses, play again?(y/n)");
+                    Console.WriteLine("You've had too many guesses, Better luck next time!");
                     string input = Console.ReadLine().ToUpper();
-                    if (input == "Y")
-                    {
-                        play = true;
-                        break;
-                    }
-                    else if (input == "N")
-                    {
-                        play = false;
-                        break;
-                    }
-                    Console.Write("Not valid input");
-                    if (!play)
-                    {
-                        break;
-                    }
-
+                    break;
                 }
             }
             catch
             {
                 Console.WriteLine("Bad input.");
             }
-
         }
-
-        Console.WriteLine($"You won with {guesses} guesses!");
-
+        if (!gameOver) Console.WriteLine($"You won with {guesses} guesses!");
     }
 }
