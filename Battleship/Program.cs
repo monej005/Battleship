@@ -57,7 +57,7 @@ class MainClass
                 
         }
 
-        Console.WriteLine("Hello! Welcome to Battleships, you'll be asked to enter two numbers which act as co-ordinates on the AI's grid. You'll be given clues about how well you are doing as you go along. Good luck!");
+        Console.WriteLine("Hello! Welcome to Battleships, you'll be asked to enter two numbers which act as co-ordinates on the AI's grid. /t You'll be given clues about how well you are doing as you go along. Good luck!");
 
         while (true)
         {
@@ -125,7 +125,7 @@ class MainClass
                         board[col, row] = 'O';
                         if (actualBoard[col, row] == 'H') Console.WriteLine("Hot");
                         if (actualBoard[col, row] == 'W') Console.WriteLine("Warm");
-                        if (actualBoard[col, row] == '.') Console.WriteLine("Miss");
+                        if (actualBoard[col, row] == '.') Console.WriteLine("Cold");
                     }
                 }
                 if (guesses >= guessesLimit)
